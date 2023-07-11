@@ -12,12 +12,15 @@
         <junit.version>5.9.3</junit.version>
         <webdriver.manager.version>5.3.3</webdriver.manager.version>
         <selenium.java.version>3.141.59</selenium.java.version>
-        <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <assertj.version>3.24.2</assertj.version>
+
+        <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <checkstyle.version>3.3.0</checkstyle.version>
         <spotbugs.version>4.7.3.4</spotbugs.version>
 
         <browser>chrome</browser>
+
+        <base.url/>
     </properties>
 
     <dependencies>
@@ -50,6 +53,15 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <base.url>https://otus.ru</base.url>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -59,6 +71,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <browser>${browser}</browser>
+                        <base.url>${base.url}</base.url>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
