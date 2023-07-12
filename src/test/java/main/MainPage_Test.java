@@ -1,5 +1,6 @@
 package main;
 
+import annotations.Driver;
 import exceptions.PathEmptyException;
 import extensions.UIExtensions;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,8 @@ import pages.MainPage;
 @ExtendWith(UIExtensions.class)
 public class MainPage_Test {
 
-    private WebDriver driver;
+    @Driver
+    public WebDriver driver;
 
     @Test
     public void testArticleThumbs() throws PathEmptyException {
