@@ -61,7 +61,7 @@ public abstract class AbsBasePage<T> extends AbsPageObject {
             for (Template template : templates) {
                 if (template.name().equals(name)) {
                     String urlTemplate = template.template();
-                    for(int i = 0; i < params.length; i++) {
+                    for (int i = 0; i < params.length; i++) {
                         urlTemplate = urlTemplate.replace(String.format("{%d}", i + 1), params[i]);
                     }
 

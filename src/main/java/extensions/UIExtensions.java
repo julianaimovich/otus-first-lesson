@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +25,21 @@ public class UIExtensions implements BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
         WebDriver driver = new FactoryDriver().getDriver();
+
         List<Field> fields = this.getFieldsByAnnotation(Driver.class, extensionContext.getTestClass().get());
 
+        for (Field field: fields) {
+            AccessController.doPrivileged((PrivilegedAction<Void)
+                 () -> {
+                    field.setAccessible(true);
+                    try {
+                        field.set(field, driver);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return null;
+                }
+            );
+        }
     }
-
 }
