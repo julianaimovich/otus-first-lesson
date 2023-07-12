@@ -1,13 +1,29 @@
 package pages;
 
 import annotations.Path;
+import annotations.Template;
+import annotations.UrlTemplates;
 import exceptions.PathEmptyException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import pageobject.AbsPageObject;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbsBasePage<T> extends AbsPageObject {
 
     private String BASE_URL = System.getProperty("base.url");
+
+    @FindBy(tagName = "h1")
+    private WebElement header;
+
+    public T pageHeaderShouldBeVisible() {
+        assertThat(waiters.waitForElementVisible(header))
+                .as("Header should be visible")
+                .isTrue();
+        return (T) this;
+    }
 
     public AbsBasePage(WebDriver driver) {
         super(driver);
@@ -32,6 +48,27 @@ public abstract class AbsBasePage<T> extends AbsPageObject {
         }
 
         driver.get(url);
+        return (T) this;
+    }
+
+    // TODO: убрать если не надо
+    public T open(String name, String[] params) {
+        Class<? extends AbsBasePage> clazz = this.getClass();
+        if (clazz.isAnnotationPresent(UrlTemplates.class)) {
+            UrlTemplates urlTemplates = clazz.getAnnotation(UrlTemplates.class);
+            Template[] templates = urlTemplates.templates();
+
+            for (Template template : templates) {
+                if (template.name().equals(name)) {
+                    String urlTemplate = template.template();
+                    for(int i = 0; i < params.length; i++) {
+                        urlTemplate = urlTemplate.replace(String.format("{%d}", i + 1), params[i]);
+                    }
+
+                    driver.get(BASE_URL + urlTemplate);
+                }
+            }
+        }
         return (T) this;
     }
 }
