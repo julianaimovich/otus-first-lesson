@@ -6,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
-
 import java.util.logging.Level;
 
 public class ChromeWebDriver implements IDriver {
@@ -27,6 +26,6 @@ public class ChromeWebDriver implements IDriver {
         logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
         chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-            return new ChromeDriver(chromeOptions);
+        return new ChromeDriver(chromeOptions);
     }
 }

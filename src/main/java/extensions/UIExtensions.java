@@ -5,7 +5,6 @@ import factory.FactoryDriver;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.security.AccessController;
@@ -29,7 +28,7 @@ public class UIExtensions implements BeforeEachCallback {
         List<Field> fields = this.getFieldsByAnnotation(Driver.class, extensionContext.getTestClass().get());
 
         for (Field field: fields) {
-            AccessController.doPrivileged((PrivilegedAction<Void)
+            AccessController.doPrivileged((PrivilegedAction<Void>)
                  () -> {
                     field.setAccessible(true);
                     try {

@@ -1,5 +1,7 @@
 package pages;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import annotations.Path;
 import annotations.Template;
 import annotations.UrlTemplates;
@@ -9,11 +11,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pageobject.AbsPageObject;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public abstract class AbsBasePage<T> extends AbsPageObject {
 
-    private String BASE_URL = System.getProperty("base.url");
+    private static final String BASE_URL = System.getProperty("base.url");
 
     @FindBy(tagName = "h1")
     private WebElement header;
@@ -22,6 +22,13 @@ public abstract class AbsBasePage<T> extends AbsPageObject {
         assertThat(waiters.waitForElementVisible(header))
                 .as("Header should be visible")
                 .isTrue();
+        return (T) this;
+    }
+
+    public T pageHeaderShouldBeSameAs(String header) {
+        assertThat(this.header.getText())
+                .as("Header should be {}", header)
+                .isEqualTo(header);
         return (T) this;
     }
 
